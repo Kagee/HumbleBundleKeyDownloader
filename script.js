@@ -1,26 +1,26 @@
 function HumbleBundleExtractor(div) {
 
-window.history.replaceState(null, null, "/#Yes, look here for progress updates.");
-alert("Please look at the browser adress bar for progress updates.\nOpen the developer console for debug messages.")
-alert("This script runs for a long time, and using threads (workers) from a chrome extension is ass.\nPlease tell chrome to \"Wait\" when it complains that the page is unreponsive.")
-window.history.replaceState(null, null, "/#Extracting Humble Bundre orders");
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "https://www.humblebundle.com/api/v1/user/order", false);
-xhr.send(null);
-console.log(xhr)
+  window.history.replaceState(null, null, "/#Yes, look here for progress updates.");
+  alert("Please look at the browser adress bar for progress updates.\nOpen the developer console for debug messages.")
+  alert("This script runs for a long time, and rewriting it to use threads (workers) is ass.\nPlease tell chrome to \"Wait\" when it complains that the page is unreponsive.")
+  window.history.replaceState(null, null, "/#Extracting Humble Bundre orders");
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://www.humblebundle.com/api/v1/user/order", true);
 
-if (xhr.readyState == 4) {
+  xhr.onload = function (e) {
+      if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
         var resp = JSON.parse(xhr.responseText);
         //console.clear()
         if(resp.length > 0) {
             console.log(resp.length + " gamekeys found");
             var arrayLength = resp.length;
-            output = "bundle_name\tkey_type\tshort_item_name\tshort_redeemed_key_val\titem_name\tsold_out\titem_name\tredeemed_key_val\n";
+            output = "short_item_name\tshort_redeemed_key_val\tbundle_name\tkey_type\tsold_out\tfull_item_name\tfull_redeemed_key_val\n";
 
             for (var i = 0; i < arrayLength; i++) {
-                  if (resp[i].gamekey != 'F3xMAh3w6Z83fWTy' && resp[i].gamekey != 'GFFPZkuZthAydUwu') {
-                    continue
-                  }
+                  //if (resp[i].gamekey != 'F3xMAh3w6Z83fWTy' && resp[i].gamekey != 'GFFPZkuZthAydUwu') {
+                  //  continue
+                  //}
                   console.log("Key " + (i+1) + " of " + arrayLength  + " processed");
                     window.history.replaceState(null, null, "/#Processing order " + (i+1) + " of " + arrayLength);
                     //div.innerHTML = "Key " + (i+1) + " of " + arrayLength  + " processed";
@@ -50,10 +50,10 @@ if (xhr.readyState == 4) {
                              * redeemed_key_val\n";
                              * 
                              * */
-                            output = output + data["product"]["human_name"] + "\t"
-                                            + data["tpkd_dict"]["all_tpks"][j]["key_type_human_name"] + "\t"
-                                            + data["tpkd_dict"]["all_tpks"][j]["human_name"].substring(0, 35) + "\t"
+                            output = output + ((data["tpkd_dict"]["all_tpks"][j]["human_name"] == null) ? 'No name defined' : data["tpkd_dict"]["all_tpks"][j]["human_name"] ).substring(0, 35) + "\t"
                                             + ((data["tpkd_dict"]["all_tpks"][j]["redeemed_key_val"] == null) ? 'Not redeemed':data["tpkd_dict"]["all_tpks"][j]["redeemed_key_val"]).substring(0, 35) + "\t"
+                                            + data["product"]["human_name"] + "\t"
+                                            + data["tpkd_dict"]["all_tpks"][j]["key_type_human_name"] + "\t"
                                             + ((data["tpkd_dict"]["all_tpks"][j]["sold_out"] == null) ?'true':'false') + "\t"
                                             + data["tpkd_dict"]["all_tpks"][j]["human_name"] + "\t"
                                             + ((data["tpkd_dict"]["all_tpks"][j]["redeemed_key_val"] == null) ? 'Not redeemed':data["tpkd_dict"]["all_tpks"][j]["redeemed_key_val"]) + "\t"
@@ -66,6 +66,8 @@ if (xhr.readyState == 4) {
                   }
                 //}
             }
+            window.history.replaceState(null, null, "/#Creating download humblebundle.csv");
+            //await wait(500);
             var blob = new Blob(
                     // I'm using page innerHTML as data
                     // note that you can use the array
@@ -76,7 +78,6 @@ if (xhr.readyState == 4) {
             ); 
             // This FileReader works asynchronously, so it doesn't lag
             // the web application
-            window.history.replaceState(null, null, "/#Creating download humblebundle.csv");
             var a = new FileReader();
             a.onload = function(e) {
              // Capture result here
@@ -94,8 +95,11 @@ if (xhr.readyState == 4) {
             console.log(resp.length + " orders found, user no orders or something is wrong. le bailing out!");
         }
     }
+    
     window.history.replaceState(null, null, "/");
     console.log("HumbleBundleExtractor complete.")
+   }}
+xhr.send();
 }
 
 var where = "" + document.location;
@@ -109,6 +113,7 @@ if (where.indexOf('humblebundle.com') !== -1) {
   if (login_found) {
       alert("You must be logged in for this to work!")
   } else {
+    //setTimeout(HumbleBundleExtractor, 100);
     HumbleBundleExtractor();
   }
 } else {
