@@ -1,6 +1,6 @@
 {
   "name": "HumbleBundleKeyDownloader",
-  "description": "Allows you to a file with tab-separated values about all your Humble Bundle keys (Steam, Origin, etc). This includes redeem-status.",
+  "description": "Allows you to get a file with tab-separated values about all your Humble Bundle keys (Steam, Origin, etc). This includes redeem-status.",
   "version": "2.0",
   "permissions": [
     "activeTab",
