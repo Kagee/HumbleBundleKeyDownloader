@@ -2,6 +2,7 @@ function HumbleBundleExtractor(div) {
 
 window.history.replaceState(null, null, "/#Yes, look here for progress updates.");
 alert("Please look at the browser adress bar for progress updates.\nOpen the developer console for debug messages.")
+alert("This script runs for a long time, and using threads (workers) from a chrome extension is ass.\nPlease tell chrome to \"Wait\" when it complains that the page is unreponsive.")
 window.history.replaceState(null, null, "/#Extracting Humble Bundre orders");
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "https://www.humblebundle.com/api/v1/user/order", false);
@@ -10,16 +11,16 @@ console.log(xhr)
 
 if (xhr.readyState == 4) {
         var resp = JSON.parse(xhr.responseText);
-        console.clear()
+        //console.clear()
         if(resp.length > 0) {
             console.log(resp.length + " gamekeys found");
             var arrayLength = resp.length;
-            output = "bundle_name\tkey_type\titem_name\tsold_out\tredeemed_key_val\n";
+            output = "bundle_name\tkey_type\tshort_item_name\tshort_redeemed_key_val\titem_name\tsold_out\titem_name\tredeemed_key_val\n";
 
             for (var i = 0; i < arrayLength; i++) {
-                  //if (resp[i].gamekey != 'F3xMAh3w6Z83fWTy' && resp[i].gamekey != 'GFFPZkuZthAydUwu') {
-                  //  continue
-                  //}
+                  if (resp[i].gamekey != 'F3xMAh3w6Z83fWTy' && resp[i].gamekey != 'GFFPZkuZthAydUwu') {
+                    continue
+                  }
                   console.log("Key " + (i+1) + " of " + arrayLength  + " processed");
                     window.history.replaceState(null, null, "/#Processing order " + (i+1) + " of " + arrayLength);
                     //div.innerHTML = "Key " + (i+1) + " of " + arrayLength  + " processed";
@@ -40,10 +41,21 @@ if (xhr.readyState == 4) {
 
                         for (var j = 0; j < num_tpks; j++) {
                             console.log(data["tpkd_dict"]["all_tpks"][j]["key_type_human_name"]+ ": "+ data["tpkd_dict"]["all_tpks"][j]["human_name"])
+                            /* "bundle_name\t
+                             * key_type\t
+                             * short_item_name\t
+                             * short_redeemed_key_val\t
+                             * sold_out\t
+                             * item_name\t
+                             * redeemed_key_val\n";
+                             * 
+                             * */
                             output = output + data["product"]["human_name"] + "\t"
                                             + data["tpkd_dict"]["all_tpks"][j]["key_type_human_name"] + "\t"
-                                            + data["tpkd_dict"]["all_tpks"][j]["human_name"] + "\t"
+                                            + data["tpkd_dict"]["all_tpks"][j]["human_name"].substring(0, 35) + "\t"
+                                            + ((data["tpkd_dict"]["all_tpks"][j]["redeemed_key_val"] == null) ? 'Not redeemed':data["tpkd_dict"]["all_tpks"][j]["redeemed_key_val"]).substring(0, 35) + "\t"
                                             + ((data["tpkd_dict"]["all_tpks"][j]["sold_out"] == null) ?'true':'false') + "\t"
+                                            + data["tpkd_dict"]["all_tpks"][j]["human_name"] + "\t"
                                             + ((data["tpkd_dict"]["all_tpks"][j]["redeemed_key_val"] == null) ? 'Not redeemed':data["tpkd_dict"]["all_tpks"][j]["redeemed_key_val"]) + "\t"
                                             + "\n";
                         }
@@ -85,6 +97,7 @@ if (xhr.readyState == 4) {
     window.history.replaceState(null, null, "/");
     console.log("HumbleBundleExtractor complete.")
 }
+
 var where = "" + document.location;
 if (where.indexOf('humblebundle.com') !== -1) {
   spans = document.getElementsByClassName("navbar-item-text");
