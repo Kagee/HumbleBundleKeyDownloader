@@ -12,7 +12,7 @@
     "persistent": false
   },
   "browser_action": {
-    "default_title": "Make this page red"
+    "default_title": "Download Humble Bundle keys"
   },
   "manifest_version": 2
 }

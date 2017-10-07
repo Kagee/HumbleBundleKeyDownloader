@@ -1,7 +1,7 @@
 function HumbleBundleExtractor(div) {
 
 window.history.replaceState(null, null, "/#Yes, look here for progress updates.");
-alert("Please look at the browser adress bar for progress updates.")
+alert("Please look at the browser adress bar for progress updates.\nOpen the developer console for debug messages.")
 window.history.replaceState(null, null, "/#Extracting Humble Bundre orders");
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "https://www.humblebundle.com/api/v1/user/order", false);
@@ -17,9 +17,11 @@ if (xhr.readyState == 4) {
             output = "bundle_name\tkey_type\titem_name\tsold_out\tredeemed_key_val\n";
 
             for (var i = 0; i < arrayLength; i++) {
-                //if (resp[i].gamekey == 'F3xMAh3w6Z83fWTy' || resp[i].gamekey == 'GFFPZkuZthAydUwu') {
+                  //if (resp[i].gamekey != 'F3xMAh3w6Z83fWTy' && resp[i].gamekey != 'GFFPZkuZthAydUwu') {
+                  //  continue
+                  //}
                   console.log("Key " + (i+1) + " of " + arrayLength  + " processed");
-                    window.history.replaceState(null, null, "/#Processing order " + (i+1) + " of " + arrayLength  + " processed");
+                    window.history.replaceState(null, null, "/#Processing order " + (i+1) + " of " + arrayLength);
                     //div.innerHTML = "Key " + (i+1) + " of " + arrayLength  + " processed";
                   // F3xMAh3w6Z83fWTy / https://www.humblebundle.com/downloads?key=F3xMAh3w6Z83fWTy / Yogscast Jingle Jam 2016
                   // GFFPZkuZthAydUwu // https://www.humblebundle.com/downloads?key=GFFPZkuZthAydUwu / Humble Indie Bundle 18
@@ -80,8 +82,23 @@ if (xhr.readyState == 4) {
             console.log(resp.length + " orders found, user no orders or something is wrong. le bailing out!");
         }
     }
-    window.history.replaceState(null, null, "/#" + "HumbleBundleExtractor complete.");
+    window.history.replaceState(null, null, "/");
     console.log("HumbleBundleExtractor complete.")
 }
-HumbleBundleExtractor();
+var where = "" + document.location;
+if (where.indexOf('humblebundle.com') !== -1) {
+  spans = document.getElementsByClassName("navbar-item-text");
+  span_count = spans.length;
+  login_found=false;
+  for (var k = 0; k < span_count; k++) {
+     if (spans[k].innerHTML.indexOf('Sign up') !== -1) { login_found = true; }
+  }
+  if (login_found) {
+      alert("You must be logged in for this to work!")
+  } else {
+    HumbleBundleExtractor();
+  }
+} else {
+  alert("You must be logged inn on humblebundle.com for this to work!")
+}
 
