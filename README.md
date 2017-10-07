@@ -11,11 +11,11 @@ Horribly written Chrome extension that allows you to get a file with tab-separat
   * Open the developer console for debug messages
 
 * This script runs for a long time, and rewriting it to use threads (workers) is ass.
-  * Please tell chrome to \"Wait\" when it complains that the page is unreponsive.")
+  * Please tell chrome to ***"Wait"*** when it complains that the page is unreponsive.
 
 ***Browser usage:***
 * Login on www.humblebundle.com
-* Press the "H" that should appear in the top-right corner of the browser (where extention buttons normally appear)
+* Press the "H" that should appear in the top-right corner of the browser (where extensions buttons normally appear)
 
 ***Using tab-delimited file:***
 * Open in i.e. Libreoffice calc
