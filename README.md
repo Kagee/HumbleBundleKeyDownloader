@@ -10,6 +10,7 @@ Usage:
 * Login on www.humblebundle.com
 * Press the "H" that should appear in the top-right corner of the browser (where extention buttons normally appear)
 
+IMPORTANT:
 * Please look at the browser adress bar for progress updates.
   * Open the developer console for debug messages
 
