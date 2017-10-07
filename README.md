@@ -1,6 +1,10 @@
 # HumbleBundleKeyDownloader
 Horribly written Chrome extension that allows you to get a file with tab-separated values about all your Humble Bundle keys (Steam, Origin, etc). This includes redeem-status.
 
+Usage:
+* Login on www.humblebundle.com
+* Press the "H" that should appear in the top-right corner of the browser (where extention buttons normally appear)
+
 * Please look at the browser adress bar for progress updates.
   * Open the developer console for debug messages
 
